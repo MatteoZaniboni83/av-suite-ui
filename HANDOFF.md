@@ -2,12 +2,21 @@
 
 Read this after CLAUDE.md at the start of every session. Newest state first.
 
-## State as of 2026-11-18: v0.1.0 and v0.2.0 tagged locally, nothing pushed
+## State as of 2026-11-18: public on GitHub, v0.1.0 and v0.2.0 pushed
 
-- **Two tags, both local.** `v0.1.0` is the extraction: what the apps build
-  today, proven by the golden test. `v0.2.0` adds one deliberate restyle:
-  the warning is yellow (below). There is no GitHub repo and no push: the
-  user creates the repo once the open decisions below are settled. 85 tests
+- **The repo is public and pushed:**
+  https://github.com/MatteoZaniboni83/av-suite-ui (`origin`). `main` and
+  both tags are there. Pin them by commit SHA:
+  - `v0.1.0` → `286173d38277ed7f5ce436d579af98953b4f5a18`, the extraction:
+    what the apps build today, proven by the golden test;
+  - `v0.2.0` → `6a57e78b54c11f98ec1d1f65471c9a1cbd64d31b`, which adds one
+    deliberate restyle: the warning is yellow (below).
+- **CI is green.** The first run (44398279427, on `b44ba81`) passed ruff and
+  85 tests offscreen and with no fonts, on Python 3.12 and 3.14, with
+  nothing skipped. The repo's very first push started no run: its newest
+  commit was Markdown-only, so `paths-ignore` skipped the whole push. CI now
+  also has `workflow_dispatch` (`gh workflow run CI`).
+- 85 tests
   pass, ruff is clean, and the suite gives the same
   result in the macOS style (`QT_STYLE_OVERRIDE=macOS`) and with no fonts
   (`QT_QPA_PLATFORM=minimal`). Run both before touching anything:
@@ -103,31 +112,26 @@ filled correctly. The run printed `frozen 11793 True`.
 2. **Settled 2026-11-18:** the repo is **public**; apps **pin by full
    commit SHA** with the tag in a comment; **Linux CI** is added
    (`.github/workflows/ci.yml`: ruff, then the suite offscreen and with no
-   fonts, on Python 3.12 and 3.14). 3.12 has never run locally (only 3.14
-   is installed), so CI's first run is the first test of the
-   `requires-python = ">=3.12"` claim.
-3. **Still open before creating the GitHub repo:**
-   - **The go-ahead** to create the repo and push. (The commit email is
-     settled: on the user's word, before any push, every commit was
-     rewritten to the GitHub noreply address, and both tags were recreated
-     on the rewritten commits with their messages and dates. No object
-     reachable from `main` or the tags contains the personal address. A
-     bundle of the old history was kept only in the session's scratchpad.)
+   fonts, on Python 3.12 and 3.14). 3.12 is not installed locally, so CI
+   is the only check of `requires-python = ">=3.12"`; it passes.
+3. **Settled 2026-11-18:** the commit email. On the user's word, before
+   any push, every commit was rewritten to the GitHub noreply address, and
+   both tags were recreated on the rewritten commits with their messages
+   and dates. No pushed object contains the personal address. Then the repo
+   was created and pushed, also on the user's word.
+4. **Still open, not blocking:**
    - **The folder name has a space** (`av-suite ui`). An app developing
      against a local checkout (`pip install -e "../av-suite ui"`) has to
      quote the path. Renaming it to `av-suite-ui` would match the repo
      name. It is the user's folder, so it was not renamed.
-4. **`format_size`** is identical in both apps. It is an engine helper in
-   Media Transfer, whose engines must stay Qt-free, so it has not moved. If it
-   should be shared, it would go in a Qt-free submodule (say
-   `av_suite_ui.text`). That is the user's call.
+   - **`format_size`** is identical in both apps. It is an engine helper
+     in Media Transfer, whose engines must stay Qt-free, so it has not
+     moved. If it should be shared, it would go in a Qt-free submodule (say
+     `av_suite_ui.text`). That is the user's call.
 
 ## Next up (rough priority)
 
-1. Settle the decisions above, then create the public repo and push `main`
-   plus the `v0.1.0` and `v0.2.0` tags. Check the first CI run, Python 3.12
-   especially.
-2. **Media Transfer switches** (in its own session and repo), best in two
+1. **Media Transfer switches** (in its own session and repo), best in two
    commits: first pin `v0.1.0` (by its commit SHA), a pure refactor that the golden test says
    looks the same; then bump to `v0.2.0` and look at its warning notes
    (and anything it paints with `palette()["warn"]`). For the first:
@@ -140,11 +144,11 @@ filled correctly. The run printed `frozen 11793 True`.
    - change the spec's `datas` to the app sheet;
    - check that its own test_theme still passes.
 
-3. **Annotations switches** the same way, with `annotations_app.qss`, and
+2. **Annotations switches** the same way, with `annotations_app.qss`, and
    the same two steps. The
    closed-branch image file becomes `branch_*.svg` (the same drawing as
    `arrow_right_*.svg`); its own tests check by selector, not file name.
-4. **Smart Preview, the later phase.** It has `utils/theme.py` (167 lines)
+3. **Smart Preview, the later phase.** It has `utils/theme.py` (167 lines)
    and two hand-written 877-line sheets (`resources/styles/dark.qss`,
    `light.qss`). Its colours are hex values substituted in place, not
    tokens, and its `build_stylesheet(accent_hex, mode)` takes its arguments

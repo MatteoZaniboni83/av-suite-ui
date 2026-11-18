@@ -9,8 +9,7 @@ bump each app's pin.
 ## In an app
 
 Pin a release by its tag's full commit SHA in `requirements.txt`, with the
-tag in a comment. A tag can be moved and a SHA cannot. The repo is not on
-GitHub yet; see HANDOFF.md.
+tag in a comment. A tag can be moved and a SHA cannot.
 
 ```
 av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@<full SHA>  # v0.2.0

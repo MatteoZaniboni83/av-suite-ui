@@ -11,7 +11,7 @@ each app's pin.
 | --- | --- |
 | Distribution | `av-suite-ui` |
 | Package | `av_suite_ui` |
-| Repo (planned) | `MatteoZaniboni83/av-suite-ui`, **public**, not created yet |
+| Repo | [`MatteoZaniboni83/av-suite-ui`](https://github.com/MatteoZaniboni83/av-suite-ui), **public** |
 | Apps pin it as | `av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@<full SHA>  # vX.Y.Z` |
 
 "AV Suite", `avsuite` and `av-suite` stay free for the hub (Media Transfer's
@@ -145,14 +145,14 @@ the gallery (`--screenshot`) and look at them in the macOS style too.
 
 ## Git and releases
 
-- **No remote yet.** Do not create the GitHub repo or push until the user
-  says so. The commit identity is in this repo's own config:
+- **Remote:** `origin` is the public GitHub repo, created on 2026-11-18.
+  Push only when the user says so. Push with
+  `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push`
+  and push a new tag explicitly (`push origin vX.Y.Z`). The commit identity is in this repo's own config:
   MatteoZaniboni83 with the GitHub **noreply** address
   (`148096572+MatteoZaniboni83@users.noreply.github.com`), because the repo
   is public. The private app repos use the personal address; never copy
   their identity here. The global git config has none.
-  When the remote exists, push with
-  `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push`.
 - **No `Co-Authored-By` trailer** in commit messages: the user's convention
   across the suite.
 - Small commits, one step each.
