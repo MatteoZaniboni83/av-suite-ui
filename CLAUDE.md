@@ -146,8 +146,11 @@ the gallery (`--screenshot`) and look at them in the macOS style too.
 ## Git and releases
 
 - **No remote yet.** Do not create the GitHub repo or push until the user
-  says so. The commit identity is in this repo's own config
-  (MatteoZaniboni83, the same as the apps); the global git config has none.
+  says so. The commit identity is in this repo's own config:
+  MatteoZaniboni83 with the GitHub **noreply** address
+  (`148096572+MatteoZaniboni83@users.noreply.github.com`), because the repo
+  is public. The private app repos use the personal address; never copy
+  their identity here. The global git config has none.
   When the remote exists, push with
   `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push`.
 - **No `Co-Authored-By` trailer** in commit messages: the user's convention

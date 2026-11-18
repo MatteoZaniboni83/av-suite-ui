@@ -107,14 +107,12 @@ filled correctly. The run printed `frozen 11793 True`.
    is installed), so CI's first run is the first test of the
    `requires-python = ">=3.12"` claim.
 3. **Still open before creating the GitHub repo:**
-   - **Commit email in a public repo.** Every commit here is authored
-     `MatteoZaniboni83 <the user's personal email>`. Both app repos are
-     private, so this repo would be the first to publish that address.
-     Before the first push, the history can be rewritten to the GitHub
-     noreply address, which changes every SHA and moves both tags. That is
-     harmless now, because nothing is pushed or pinned. After the push, it
-     is not.
-   - **The go-ahead** to create the repo and push.
+   - **The go-ahead** to create the repo and push. (The commit email is
+     settled: on the user's word, before any push, every commit was
+     rewritten to the GitHub noreply address, and both tags were recreated
+     on the rewritten commits with their messages and dates. No object
+     reachable from `main` or the tags contains the personal address. A
+     bundle of the old history was kept only in the session's scratchpad.)
    - **The folder name has a space** (`av-suite ui`). An app developing
      against a local checkout (`pip install -e "../av-suite ui"`) has to
      quote the path. Renaming it to `av-suite-ui` would match the repo
