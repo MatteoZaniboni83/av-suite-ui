@@ -1,0 +1,187 @@
+/* Annotations' own sheet: the rules of its styles.qss (1a06a1b) that only it
+   uses, appended after av_suite_ui's shared sheet. This is the file
+   Annotations adopts when it switches to the package; test_golden lists every
+   rule shared + this has that Annotations' own sheet did not, and checks the
+   page tree paints the same. */
+
+/* The database page is a spreadsheet: its cells need telling apart. */
+QTableView#databaseTable { gridline-color: @border_subtle@; }
+/* Its row handle: the vertical header, a narrow strip of six dots. */
+QTableView#databaseTable QHeaderView:vertical { background-color: @bg_sunken@; }
+QTableView#databaseTable QHeaderView::section:vertical {
+    background-color: @bg_sunken@;
+    color: @text_muted@;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid @border_subtle@;
+}
+QTableView#databaseTable QHeaderView::section:vertical:hover { color: @text_primary@; }
+/* Names as the user typed them, a size up, as Notion shows them: a
+   deliberate exception (by request) to the suite's uppercase headers. */
+QTableView#databaseTable QHeaderView::section:horizontal {
+    padding: 0 8px 0 6px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    color: @text_secondary@;
+    text-transform: none;
+}
+
+/* ═══ Annotations sections. Everything below is new to this app and reuses
+   the tokens above; the selectors are a frozen contract the editor, sidebar
+   and database screens are built against. ═══════════════════════════════ */
+
+/* ── Sidebar page tree ────────────────────────────────────────────────── */
+QTreeView {
+    background-color: @bg_raised@;
+    border: none;
+    outline: 0;
+}
+QTreeView::item { height: 28px; padding: 0 4px; border: none; }
+QTreeView::item:hover { background-color: @bg_overlay@; }
+QTreeView::item:selected { background-color: @accent_tint@; color: @text_primary@; }
+/* Without the :selected rule the branch strip of a selected row keeps Qt's
+   palette highlight — a blue sliver beside the accent-tinted row. And Qt's
+   own expand/collapse indicator is palette-drawn, invisible on the themed
+   tree: a page with sub-pages showed no chevron at all, so the open and
+   closed states are explicit images, as the combo arrow is. */
+QTreeView::branch { background: transparent; }
+QTreeView::branch:selected { background-color: @accent_tint@; }
+QTreeView::branch:closed:has-children { image: url("@arrow_right_icon@"); }
+QTreeView::branch:open:has-children { image: url("@arrow_icon@"); }
+QTreeView#pageTree { background-color: @bg_raised@; }
+
+/* ── Note editor surface ──────────────────────────────────────────────── */
+QScrollArea#editorScroll,
+QScrollArea#editorScroll > QWidget#qt_scrollarea_viewport {
+    background-color: @bg_base@;
+    border: none;
+}
+QLineEdit#pageTitle {
+    background: transparent;
+    border: none;
+    color: @text_primary@;
+    font-size: 18px;
+    font-weight: 600;
+}
+/* The Inbox's pinned title: read-only looks locked, as a disabled control
+   does — an editable-looking field that refuses input reads as broken. */
+QLineEdit#pageTitle:read-only { color: @text_muted@; }
+QLabel#breadcrumb { color: @text_muted@; font-size: 11px; }
+
+/* ── Blocks ───────────────────────────────────────────────────────────── */
+QPlainTextEdit#blockText {
+    background: transparent;
+    border: none;
+    color: @text_primary@;
+    font-size: 13px;
+    selection-background-color: @accent_tint@;
+}
+#blockText[blockKind="heading1"] { font-size: 18px; font-weight: 600; }
+#blockText[blockKind="heading2"] { font-size: 15px; font-weight: 600; }
+#blockText[blockKind="heading3"] { font-size: 13px; font-weight: 600; }
+#blockText[blockKind="quote"] { color: @text_secondary@; }
+#blockText[blockKind="code"] {
+    font-family: @font_mono@;
+    font-size: 12px;
+    background-color: @bg_sunken@;
+    border: 1px solid @border_subtle@;
+    border-radius: 3px;
+    padding: 8px;
+}
+#blockText[done="true"] { color: @text_muted@; text-decoration: line-through; }
+
+/* The focused block carries the accent on its left edge, as a checked
+   navButton does — never a filled background behind editable text. */
+QFrame#blockRow { background: transparent; border: none;
+                  border-left: 2px solid transparent; }
+QFrame#blockRow[focused="true"] { border-left: 2px solid @accent@; }
+
+QToolButton#blockHandle, QPushButton#blockHandle {
+    background: transparent;
+    border: none;
+    color: @text_muted@;
+    padding: 0;
+}
+QToolButton#blockHandle:hover, QPushButton#blockHandle:hover {
+    color: @text_secondary@;
+    background-color: @bg_overlay@;
+}
+
+/* ── Bookmark and attachment blocks ───────────────────────────────────── */
+QLabel#linkTitle { color: @accent@; }
+QLabel#linkUrl { color: @text_muted@; font-size: 11px; font-family: @font_mono@; }
+QFrame#attachmentCard { background-color: @bg_raised@; border: 1px solid @border_subtle@;
+                        border-radius: 3px; }
+
+/* ── Database view tabs ─────────────────────────────────────────────── */
+QPushButton#viewTab {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: @text_secondary@;
+    padding: 5px 12px;
+    font-weight: 500;
+}
+QPushButton#viewTab:hover { background-color: @bg_overlay@; color: @text_primary@; }
+QPushButton#viewTab:checked { background-color: @bg_elevated@; color: @text_primary@; }
+QPushButton#viewTab:disabled { color: @text_muted@; }
+
+/* A group's fold arrow, big enough to aim at. */
+QToolButton#groupFold {
+    background: transparent;
+    border: none;
+    color: @text_secondary@;
+    font-size: 14px;
+    padding: 0 2px;
+    min-width: 20px;
+    min-height: 24px;
+}
+QToolButton#groupFold:hover { color: @text_primary@; }
+
+/* ── Database page, Notion-like (by the user's request, 2026-10-25) ───────
+   No box around the table: it sits on the page, its header on the page
+   background, lines faint, text a size up. Scoped to the database page so
+   the suite's file lists keep their own look. */
+QLineEdit#databaseTitle {
+    font-size: 26px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    color: @text_primary@;
+    padding: 0;
+}
+QLabel#dbStats { color: @text_muted@; font-size: 12px; }
+QLineEdit#dbFilter { padding: 3px 8px; }
+QTableView#databaseTable {
+    background-color: @bg_base@;
+    border: none;
+    border-top: 1px solid @border_subtle@;
+    font-size: 14px;
+    gridline-color: @border_subtle@;
+}
+QTableView#databaseTable QHeaderView { background-color: @bg_base@; }
+QTableView#databaseTable QHeaderView::section:horizontal {
+    background-color: @bg_base@;
+    color: @text_secondary@;
+    font-size: 13px;
+    font-weight: 400;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid @border_subtle@;
+    border-right: 1px solid @border_subtle@;
+}
+QTableView#databaseTable QHeaderView::section:vertical,
+QTableView#databaseTable QHeaderView:vertical { background-color: @bg_base@; }
+QTableView#databaseTable QTableCornerButton::section {
+    background-color: @bg_base@;
+    border: none;
+    border-bottom: 1px solid @border_subtle@;
+}
+QToolButton#dbIcon {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+}
+QToolButton#dbIcon:hover { background-color: @bg_overlay@; }

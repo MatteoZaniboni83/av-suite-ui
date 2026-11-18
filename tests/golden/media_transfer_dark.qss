@@ -1,0 +1,271 @@
+/* Media Transfer stylesheet template. Tokens are names between @ signs; theme.palette() supplies the values.
+   Visual language follows Smart Preview (Tally). Status colours (ok / warn /
+   error) mean state only; the accent marks selection, focus and the one
+   primary action per screen. */
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+QMainWindow, QDialog { background-color: #1a1c1e; }
+
+QWidget {
+    background-color: #1a1c1e;
+    color: #e8eaed;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+}
+
+QToolTip {
+    background-color: #2b2f36;
+    color: #e8eaed;
+    border: 1px solid #3d4450;
+    padding: 4px 8px;
+}
+
+/* ── Menus ────────────────────────────────────────────────────────────── */
+QMenuBar { background-color: #22252a; color: #9aa3b0;
+           border-bottom: 1px solid #2e3238; }
+QMenuBar::item { padding: 6px 12px; background: transparent; }
+QMenuBar::item:selected { background-color: #333840; color: #e8eaed; }
+QMenu { background-color: #22252a; border: 1px solid #3d4450; padding: 4px 0; }
+QMenu::item { padding: 7px 24px 7px 16px; }
+QMenu::item:selected { background-color: #4a3316; }
+QMenu::item:disabled { color: #5c6470; }
+QMenu::separator { height: 1px; background: #2e3238; margin: 4px 0; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+QPushButton {
+    background-color: #2b2f36;
+    color: #e8eaed;
+    border: 1px solid #3d4450;
+    border-radius: 3px;
+    padding: 0 14px;
+    min-height: 30px;
+    font-weight: 500;
+}
+QPushButton:hover { background-color: #333840; border-color: #555f6e; }
+QPushButton:pressed { background-color: #3d4450; }
+QPushButton:disabled { background-color: #22252a; color: #5c6470;
+                       border-color: #2e3238; }
+/* A checkable button that is on (Route by file type). The segment, chip and
+   nav rules below are ID selectors and keep precedence over this. Locked
+   while on, it looks locked like every other control, and keeps the accent
+   border as the one sign that it is still on. */
+QPushButton:checked { background-color: #4a3316; border-color: #6b4a1f; }
+QPushButton:checked:disabled { background-color: #22252a; color: #5c6470;
+                               border-color: #6b4a1f; }
+
+/* The one primary action on a screen (Compare, Sync). */
+QPushButton#primary {
+    background-color: #f0a040;
+    color: #121416;
+    border: 1px solid #f0a040;
+    font-weight: 600;
+}
+QPushButton#primary:hover { background-color: #e08f2e; border-color: #e08f2e; }
+QPushButton#primary:pressed { background-color: #c77a1f; }
+QPushButton#primary:disabled { background-color: #22252a; color: #5c6470;
+                               border-color: #2e3238; }
+
+/* Destructive confirmation (Mirror with deletes). */
+QPushButton#danger {
+    background-color: rgba(231, 76, 60, 0.14);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.55);
+    font-weight: 600;
+}
+QPushButton#danger:hover { background-color: rgba(231, 76, 60, 0.24); }
+
+/* Segmented controls: adjacent checkable buttons. */
+QPushButton#segment {
+    background-color: #22252a;
+    color: #9aa3b0;
+    border: 1px solid #3d4450;
+    border-radius: 0;
+    padding: 0 12px;
+    min-height: 28px;
+}
+QPushButton#segment:hover { color: #e8eaed; background-color: #333840; }
+QPushButton#segment:checked { background-color: #4a3316; color: #e8eaed;
+                              border-color: #6b4a1f; }
+QPushButton#segment[first="true"] { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+QPushButton#segment[last="true"] { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
+/* Status filter chips above the table. */
+QPushButton#chip {
+    background-color: transparent;
+    color: #9aa3b0;
+    border: 1px solid #2e3238;
+    border-radius: 3px;
+    padding: 0 10px;
+    min-height: 24px;
+    font-size: 12px;
+}
+QPushButton#chip:hover { color: #e8eaed; border-color: #3d4450; }
+QPushButton#chip:checked { background-color: #4a3316; color: #e8eaed;
+                           border-color: #6b4a1f; }
+
+QPushButton#iconButton {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #9aa3b0;
+    min-height: 28px;
+    min-width: 28px;
+    padding: 0;
+}
+QPushButton#iconButton:hover { background-color: #333840; color: #e8eaed; }
+QPushButton#iconButton:disabled { color: #5c6470; }
+
+/* ── Inputs ───────────────────────────────────────────────────────────── */
+QLineEdit, QComboBox {
+    background-color: #16181a;
+    color: #e8eaed;
+    border: 1px solid #3d4450;
+    border-radius: 3px;
+    padding: 0 8px;
+    min-height: 28px;
+    selection-background-color: #4a3316;
+}
+QLineEdit:focus, QComboBox:focus { border-color: #f0a040; }
+/* The multi-line pattern fields of the sync settings: a text field that
+   wraps. */
+QPlainTextEdit {
+    background-color: #16181a;
+    color: #e8eaed;
+    border: 1px solid #3d4450;
+    border-radius: 3px;
+    padding: 4px 6px;
+    selection-background-color: #4a3316;
+    font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    font-size: 12px;
+}
+QPlainTextEdit:focus { border-color: #f0a040; }
+QLineEdit#number { font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px; }
+QLineEdit#number:disabled { color: #5c6470; border-color: #2e3238; }
+QLineEdit#pathField { font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px; }
+QLineEdit#pathField[dropTarget="true"] { border: 1px dashed #f0a040;
+                                         background-color: #4a3316; }
+/* Styling the drop-down takes Qt's own arrow away, so the arrow is an image:
+   without one a drop-down looks like a text field. */
+QComboBox::drop-down { border: none; width: 20px; }
+QComboBox::down-arrow { image: url("@ICON_DIR@/arrow_9aa3b0.svg"); width: 10px; height: 10px; }
+QComboBox::down-arrow:disabled { image: url("@ICON_DIR@/arrow_5c6470.svg"); }
+/* Locked for the length of a transfer: it has to look it, as a button does. */
+QComboBox:disabled { color: #5c6470; border-color: #2e3238; }
+QComboBox QAbstractItemView { background-color: #22252a; border: 1px solid #3d4450;
+                              selection-background-color: #4a3316; }
+
+QCheckBox { spacing: 6px; background: transparent; }
+QCheckBox::indicator { width: 14px; height: 14px; border: 1px solid #555f6e;
+                       border-radius: 2px; background: #16181a; }
+QCheckBox::indicator:checked { image: url("@ICON_DIR@/check_f0a040_121416.svg"); border: none; background: transparent; }
+
+/* ── Table ────────────────────────────────────────────────────────────── */
+/* A list (the groups in the Delete group dialog) is a table of one column;
+   the Sync screen's folder overview is a table with branches. */
+QTableView, QListWidget, QTreeView {
+    background-color: #16181a;
+    alternate-background-color: #1a1c1e;
+    border: 1px solid #2e3238;
+    gridline-color: transparent;
+    selection-background-color: #4a3316;
+    selection-color: #e8eaed;
+    outline: 0;
+}
+QTableView::item, QListWidget::item { padding: 0 8px; border: none; }
+QListWidget::item:selected { background-color: #4a3316; color: #e8eaed; }
+QTreeView { color: #e8eaed; }
+QTreeView::item { padding: 2px 4px; border: none; }
+QTreeView::item:selected { background-color: #4a3316; color: #e8eaed; }
+QTreeView::branch { background: transparent; }
+QTreeView::branch:has-children:closed { image: url("@ICON_DIR@/branch_9aa3b0.svg"); }
+QTreeView::branch:has-children:open { image: url("@ICON_DIR@/arrow_9aa3b0.svg"); }
+QTableView[dropTarget="true"] { border: 1px dashed #f0a040; background-color: #4a3316; }
+QTableView::indicator { width: 14px; height: 14px; border: 1px solid #555f6e;
+                        border-radius: 2px; background: #16181a; }
+QTableView::indicator:checked { image: url("@ICON_DIR@/check_f0a040_121416.svg"); border: none; background: transparent; }
+QTableView::indicator:disabled { border-color: #2e3238; background: transparent; }
+
+QHeaderView { background-color: #22252a; border: none; }
+QHeaderView::section {
+    background-color: #22252a;
+    color: #5c6470;
+    border: none;
+    border-bottom: 1px solid #2e3238;
+    border-right: 1px solid #2e3238;
+    padding: 0 8px;
+    height: 28px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+QTableCornerButton::section { background-color: #22252a; border: none; }
+
+/* ── Progress ─────────────────────────────────────────────────────────── */
+QProgressBar {
+    background-color: #16181a;
+    border: 1px solid #2e3238;
+    border-radius: 2px;
+    max-height: 6px;
+    text-align: center;
+    color: transparent;
+}
+QProgressBar::chunk { background-color: #f0a040; border-radius: 1px; }
+QProgressBar[state="done"]::chunk { background-color: #2ecc71; }
+QProgressBar[state="failed"]::chunk { background-color: #e74c3c; }
+
+/* ── Scrollbars (thin, as Smart Preview) ──────────────────────────────── */
+QScrollBar:vertical { background: transparent; width: 10px; margin: 0; }
+QScrollBar::handle:vertical { background: #3d4450; min-height: 30px;
+                              border-radius: 4px; margin: 2px; }
+QScrollBar::handle:vertical:hover { background: #555f6e; }
+QScrollBar:horizontal { background: transparent; height: 10px; margin: 0; }
+QScrollBar::handle:horizontal { background: #3d4450; min-width: 30px;
+                                border-radius: 4px; margin: 2px; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }
+
+/* ── Structure ────────────────────────────────────────────────────────── */
+QFrame#navRail { background-color: #22252a; border-right: 1px solid #2e3238; }
+QPushButton#navButton {
+    background: transparent;
+    color: #9aa3b0;
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    text-align: left;
+    padding: 0 16px;
+    min-height: 40px;
+}
+QPushButton#navButton:hover { background-color: #333840; color: #e8eaed; }
+QPushButton#navButton:checked { color: #e8eaed; background-color: #2b2f36;
+                                border-left: 2px solid #f0a040; }
+QPushButton#navButton:disabled { color: #5c6470; }
+
+QFrame#toolbar, QFrame#actionBar { background-color: #22252a; }
+QFrame#toolbar { border-bottom: 1px solid #2e3238; }
+QFrame#actionBar { border-top: 1px solid #2e3238; }
+QFrame#hairline { background: #2e3238; border: none; }
+
+/* The Sync screen's folder pairs: rows on the toolbar's own surface, and the
+   divider under them that gives them more room or less. */
+QScrollArea#pairsScroll, QWidget#pairRows, QWidget#pairHeadings { background: transparent; }
+QSplitter#pairsSplit::handle:vertical { background: #2e3238; }
+QSplitter#pairsSplit::handle:vertical:hover { background: #555f6e; }
+
+QStatusBar { background-color: #22252a; color: #5c6470;
+             border-top: 1px solid #2e3238; }
+
+/* ── Labels ───────────────────────────────────────────────────────────── */
+QLabel { background: transparent; }
+QLabel#sectionLabel { color: #5c6470; font-size: 11px; font-weight: 600;
+                      letter-spacing: 1px; text-transform: uppercase; }
+QLabel#appTitle { color: #e8eaed; font-size: 15px; font-weight: 600; }
+QLabel#hint { color: #5c6470; font-size: 11px; }
+QLabel#data { color: #9aa3b0; font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px; }
+QLabel#dataStrong { color: #e8eaed; font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px;
+                    font-weight: 600; }
+QLabel#warnNote { color: #f39c12; background: rgba(243, 156, 18, 0.10);
+                  border: 1px solid rgba(243, 156, 18, 0.35); border-radius: 2px;
+                  padding: 6px 8px; font-size: 12px; }
+QLabel#errorNote { color: #e74c3c; background: rgba(231, 76, 60, 0.10);
+                   border: 1px solid rgba(231, 76, 60, 0.35); border-radius: 2px;
+                   padding: 6px 8px; font-size: 12px; }
+QLabel#placeholder { color: #5c6470; font-size: 13px; }

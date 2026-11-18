@@ -1,0 +1,26 @@
+/* Media Transfer's own sheet: the rules of its 0.1.8+ styles.qss (8b4f22c)
+   that only it uses, appended after av_suite_ui's shared sheet. This is the
+   file Media Transfer adopts when it switches to the package; test_golden
+   proves shared + this = what Media Transfer builds today. */
+
+/* The multi-line pattern fields of the sync settings: a text field that
+   wraps. */
+QPlainTextEdit {
+    background-color: @bg_sunken@;
+    color: @text_primary@;
+    border: 1px solid @border_default@;
+    border-radius: 3px;
+    padding: 4px 6px;
+    selection-background-color: @accent_tint@;
+    font-family: @font_mono@;
+    font-size: 12px;
+}
+QPlainTextEdit:focus { border-color: @accent@; }
+QLineEdit#number { font-family: @font_mono@; font-size: 12px; }
+QLineEdit#number:disabled { color: @text_muted@; border-color: @border_subtle@; }
+
+/* The Sync screen's folder pairs: rows on the toolbar's own surface, and the
+   divider under them that gives them more room or less. */
+QScrollArea#pairsScroll, QWidget#pairRows, QWidget#pairHeadings { background: transparent; }
+QSplitter#pairsSplit::handle:vertical { background: @border_subtle@; }
+QSplitter#pairsSplit::handle:vertical:hover { background: @border_strong@; }

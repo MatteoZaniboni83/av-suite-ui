@@ -1,0 +1,417 @@
+/* Annotations stylesheet template. Tokens are names between @ signs; theme.palette() supplies the values.
+   Visual language follows Smart Preview (Tally). Status colours (ok / warn /
+   error) mean state only; the accent marks selection, focus and the one
+   primary action per screen. */
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+QMainWindow, QDialog { background-color: #f0f1f3; }
+
+QWidget {
+    background-color: #f0f1f3;
+    color: #1a1c1e;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+}
+
+QToolTip {
+    background-color: #dde0e5;
+    color: #1a1c1e;
+    border: 1px solid #a8b0bc;
+    padding: 4px 8px;
+}
+
+/* ── Menus ────────────────────────────────────────────────────────────── */
+QMenuBar { background-color: #e8eaed; color: #4a5568;
+           border-bottom: 1px solid #c5cad2; }
+QMenuBar::item { padding: 6px 12px; background: transparent; }
+QMenuBar::item:selected { background-color: #d1d5db; color: #1a1c1e; }
+QMenu { background-color: #e8eaed; border: 1px solid #a8b0bc; padding: 4px 0; }
+QMenu::item { padding: 7px 24px 7px 16px; }
+QMenu::item:selected { background-color: #fdf0dc; }
+QMenu::item:disabled { color: #7c8695; }
+QMenu::separator { height: 1px; background: #c5cad2; margin: 4px 0; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+QPushButton {
+    background-color: #dde0e5;
+    color: #1a1c1e;
+    border: 1px solid #a8b0bc;
+    border-radius: 3px;
+    padding: 0 14px;
+    min-height: 30px;
+    font-weight: 500;
+}
+QPushButton:hover { background-color: #d1d5db; border-color: #7c8695; }
+QPushButton:pressed { background-color: #a8b0bc; }
+QPushButton:disabled { background-color: #e8eaed; color: #7c8695;
+                       border-color: #c5cad2; }
+
+/* The one primary action on a screen (+ Page). */
+QPushButton#primary {
+    background-color: #c77a1f;
+    color: #121416;
+    border: 1px solid #c77a1f;
+    font-weight: 600;
+}
+QPushButton#primary:hover { background-color: #a8651a; border-color: #a8651a; }
+QPushButton#primary:pressed { background-color: #8a5215; }
+QPushButton#primary:disabled { background-color: #e8eaed; color: #7c8695;
+                               border-color: #c5cad2; }
+
+/* Destructive confirmation (Delete page). */
+QPushButton#danger {
+    background-color: rgba(220, 38, 38, 0.14);
+    color: #dc2626;
+    border: 1px solid rgba(220, 38, 38, 0.55);
+    font-weight: 600;
+}
+QPushButton#danger:hover { background-color: rgba(220, 38, 38, 0.24); }
+
+/* Segmented controls: adjacent checkable buttons. */
+QPushButton#segment {
+    background-color: #e8eaed;
+    color: #4a5568;
+    border: 1px solid #a8b0bc;
+    border-radius: 0;
+    padding: 0 12px;
+    min-height: 28px;
+}
+QPushButton#segment:hover { color: #1a1c1e; background-color: #d1d5db; }
+QPushButton#segment:checked { background-color: #fdf0dc; color: #1a1c1e;
+                              border-color: #e8b87a; }
+QPushButton#segment[first="true"] { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+QPushButton#segment[last="true"] { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
+/* Filter chips above a table. */
+QPushButton#chip {
+    background-color: transparent;
+    color: #4a5568;
+    border: 1px solid #c5cad2;
+    border-radius: 3px;
+    padding: 0 10px;
+    min-height: 24px;
+    font-size: 12px;
+}
+QPushButton#chip:hover { color: #1a1c1e; border-color: #a8b0bc; }
+QPushButton#chip:checked { background-color: #fdf0dc; color: #1a1c1e;
+                           border-color: #e8b87a; }
+
+QPushButton#iconButton {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #4a5568;
+    min-height: 28px;
+    min-width: 28px;
+    padding: 0;
+}
+QPushButton#iconButton:hover { background-color: #d1d5db; color: #1a1c1e; }
+QPushButton#iconButton:disabled { color: #7c8695; }
+
+/* ── Inputs ───────────────────────────────────────────────────────────── */
+QLineEdit, QComboBox {
+    background-color: #ffffff;
+    color: #1a1c1e;
+    border: 1px solid #a8b0bc;
+    border-radius: 3px;
+    padding: 0 8px;
+    min-height: 28px;
+    selection-background-color: #fdf0dc;
+}
+QLineEdit:focus, QComboBox:focus { border-color: #c77a1f; }
+QLineEdit#pathField { font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px; }
+QLineEdit#pathField[dropTarget="true"] { border: 1px dashed #c77a1f;
+                                         background-color: #fdf0dc; }
+/* Styling the drop-down takes Qt's own arrow away, so the arrow is an image:
+   without one a drop-down looks like a text field. */
+QComboBox::drop-down { border: none; width: 20px; }
+QComboBox::down-arrow { image: url("@ICON_DIR@/arrow_4a5568.svg"); width: 10px; height: 10px; }
+QComboBox::down-arrow:disabled { image: url("@ICON_DIR@/arrow_7c8695.svg"); }
+/* A locked drop-down has to look locked, as a button does. */
+QComboBox:disabled { color: #7c8695; border-color: #c5cad2; }
+QComboBox QAbstractItemView { background-color: #e8eaed; border: 1px solid #a8b0bc;
+                              selection-background-color: #fdf0dc; }
+
+QCheckBox { spacing: 6px; background: transparent; }
+QCheckBox::indicator { width: 14px; height: 14px; border: 1px solid #7c8695;
+                       border-radius: 2px; background: #ffffff; }
+QCheckBox::indicator:checked { image: url("@ICON_DIR@/check_c77a1f_121416.svg"); border: none; background: transparent; }
+
+/* ── Table ────────────────────────────────────────────────────────────── */
+/* A list (the pages in the Delete page dialog) is a table of one column. */
+QTableView, QListWidget {
+    background-color: #ffffff;
+    alternate-background-color: #f0f1f3;
+    border: 1px solid #c5cad2;
+    gridline-color: transparent;
+    selection-background-color: #fdf0dc;
+    selection-color: #1a1c1e;
+    outline: 0;
+}
+QTableView::item, QListWidget::item { padding: 0 8px; border: none; }
+/* The database page is a spreadsheet: its cells need telling apart. */
+QTableView#databaseTable { gridline-color: #c5cad2; }
+/* Its row handle: the vertical header, a narrow strip of six dots. */
+QTableView#databaseTable QHeaderView:vertical { background-color: #ffffff; }
+QTableView#databaseTable QHeaderView::section:vertical {
+    background-color: #ffffff;
+    color: #7c8695;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #c5cad2;
+}
+QTableView#databaseTable QHeaderView::section:vertical:hover { color: #1a1c1e; }
+/* Names as the user typed them, a size up, as Notion shows them: a
+   deliberate exception (by request) to the suite's uppercase headers. */
+QTableView#databaseTable QHeaderView::section:horizontal {
+    padding: 0 8px 0 6px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4a5568;
+    text-transform: none;
+}
+QListWidget::item:selected { background-color: #fdf0dc; color: #1a1c1e; }
+QTableView[dropTarget="true"] { border: 1px dashed #c77a1f; background-color: #fdf0dc; }
+QTableView::indicator { width: 14px; height: 14px; border: 1px solid #7c8695;
+                        border-radius: 2px; background: #ffffff; }
+QTableView::indicator:checked { image: url("@ICON_DIR@/check_c77a1f_121416.svg"); border: none; background: transparent; }
+QTableView::indicator:disabled { border-color: #c5cad2; background: transparent; }
+
+QHeaderView { background-color: #e8eaed; border: none; }
+QHeaderView::section {
+    background-color: #e8eaed;
+    color: #7c8695;
+    border: none;
+    border-bottom: 1px solid #c5cad2;
+    border-right: 1px solid #c5cad2;
+    padding: 0 8px;
+    height: 28px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+QTableCornerButton::section { background-color: #e8eaed; border: none; }
+
+/* ── Progress ─────────────────────────────────────────────────────────── */
+QProgressBar {
+    background-color: #ffffff;
+    border: 1px solid #c5cad2;
+    border-radius: 2px;
+    max-height: 6px;
+    text-align: center;
+    color: transparent;
+}
+QProgressBar::chunk { background-color: #c77a1f; border-radius: 1px; }
+QProgressBar[state="done"]::chunk { background-color: #16a34a; }
+QProgressBar[state="failed"]::chunk { background-color: #dc2626; }
+
+/* ── Scrollbars (thin, as Smart Preview) ──────────────────────────────── */
+QScrollBar:vertical { background: transparent; width: 10px; margin: 0; }
+QScrollBar::handle:vertical { background: #a8b0bc; min-height: 30px;
+                              border-radius: 4px; margin: 2px; }
+QScrollBar::handle:vertical:hover { background: #7c8695; }
+QScrollBar:horizontal { background: transparent; height: 10px; margin: 0; }
+QScrollBar::handle:horizontal { background: #a8b0bc; min-width: 30px;
+                                border-radius: 4px; margin: 2px; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }
+
+/* ── Structure ────────────────────────────────────────────────────────── */
+QFrame#navRail { background-color: #e8eaed; border-right: 1px solid #c5cad2; }
+QPushButton#navButton {
+    background: transparent;
+    color: #4a5568;
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    text-align: left;
+    padding: 0 16px;
+    min-height: 40px;
+}
+QPushButton#navButton:hover { background-color: #d1d5db; color: #1a1c1e; }
+QPushButton#navButton:checked { color: #1a1c1e; background-color: #dde0e5;
+                                border-left: 2px solid #c77a1f; }
+QPushButton#navButton:disabled { color: #7c8695; }
+
+QFrame#toolbar, QFrame#actionBar { background-color: #e8eaed; }
+QFrame#toolbar { border-bottom: 1px solid #c5cad2; }
+QFrame#actionBar { border-top: 1px solid #c5cad2; }
+QFrame#hairline { background: #c5cad2; border: none; }
+
+QStatusBar { background-color: #e8eaed; color: #7c8695;
+             border-top: 1px solid #c5cad2; }
+
+/* ── Labels ───────────────────────────────────────────────────────────── */
+QLabel { background: transparent; }
+QLabel#sectionLabel { color: #7c8695; font-size: 11px; font-weight: 600;
+                      letter-spacing: 1px; text-transform: uppercase; }
+QLabel#appTitle { color: #1a1c1e; font-size: 15px; font-weight: 600; }
+QLabel#hint { color: #7c8695; font-size: 11px; }
+QLabel#data { color: #4a5568; font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px; }
+QLabel#dataStrong { color: #1a1c1e; font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; font-size: 12px;
+                    font-weight: 600; }
+QLabel#warnNote { color: #d97706; background: rgba(217, 119, 6, 0.10);
+                  border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 2px;
+                  padding: 6px 8px; font-size: 12px; }
+QLabel#errorNote { color: #dc2626; background: rgba(220, 38, 38, 0.10);
+                   border: 1px solid rgba(220, 38, 38, 0.35); border-radius: 2px;
+                   padding: 6px 8px; font-size: 12px; }
+QLabel#placeholder { color: #7c8695; font-size: 13px; }
+
+/* ═══ Annotations sections. Everything below is new to this app and reuses
+   the tokens above; the selectors are a frozen contract the editor, sidebar
+   and database screens are built against. ═══════════════════════════════ */
+
+/* ── Sidebar page tree ────────────────────────────────────────────────── */
+QTreeView {
+    background-color: #e8eaed;
+    border: none;
+    outline: 0;
+}
+QTreeView::item { height: 28px; padding: 0 4px; border: none; }
+QTreeView::item:hover { background-color: #d1d5db; }
+QTreeView::item:selected { background-color: #fdf0dc; color: #1a1c1e; }
+/* Without the :selected rule the branch strip of a selected row keeps Qt's
+   palette highlight — a blue sliver beside the accent-tinted row. And Qt's
+   own expand/collapse indicator is palette-drawn, invisible on the themed
+   tree: a page with sub-pages showed no chevron at all, so the open and
+   closed states are explicit images, as the combo arrow is. */
+QTreeView::branch { background: transparent; }
+QTreeView::branch:selected { background-color: #fdf0dc; }
+QTreeView::branch:closed:has-children { image: url("@ICON_DIR@/arrow_right_4a5568.svg"); }
+QTreeView::branch:open:has-children { image: url("@ICON_DIR@/arrow_4a5568.svg"); }
+QTreeView#pageTree { background-color: #e8eaed; }
+
+/* ── Note editor surface ──────────────────────────────────────────────── */
+QScrollArea#editorScroll,
+QScrollArea#editorScroll > QWidget#qt_scrollarea_viewport {
+    background-color: #f0f1f3;
+    border: none;
+}
+QLineEdit#pageTitle {
+    background: transparent;
+    border: none;
+    color: #1a1c1e;
+    font-size: 18px;
+    font-weight: 600;
+}
+/* The Inbox's pinned title: read-only looks locked, as a disabled control
+   does — an editable-looking field that refuses input reads as broken. */
+QLineEdit#pageTitle:read-only { color: #7c8695; }
+QLabel#breadcrumb { color: #7c8695; font-size: 11px; }
+
+/* ── Blocks ───────────────────────────────────────────────────────────── */
+QPlainTextEdit#blockText {
+    background: transparent;
+    border: none;
+    color: #1a1c1e;
+    font-size: 13px;
+    selection-background-color: #fdf0dc;
+}
+#blockText[blockKind="heading1"] { font-size: 18px; font-weight: 600; }
+#blockText[blockKind="heading2"] { font-size: 15px; font-weight: 600; }
+#blockText[blockKind="heading3"] { font-size: 13px; font-weight: 600; }
+#blockText[blockKind="quote"] { color: #4a5568; }
+#blockText[blockKind="code"] {
+    font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background-color: #ffffff;
+    border: 1px solid #c5cad2;
+    border-radius: 3px;
+    padding: 8px;
+}
+#blockText[done="true"] { color: #7c8695; text-decoration: line-through; }
+
+/* The focused block carries the accent on its left edge, as a checked
+   navButton does — never a filled background behind editable text. */
+QFrame#blockRow { background: transparent; border: none;
+                  border-left: 2px solid transparent; }
+QFrame#blockRow[focused="true"] { border-left: 2px solid #c77a1f; }
+
+QToolButton#blockHandle, QPushButton#blockHandle {
+    background: transparent;
+    border: none;
+    color: #7c8695;
+    padding: 0;
+}
+QToolButton#blockHandle:hover, QPushButton#blockHandle:hover {
+    color: #4a5568;
+    background-color: #d1d5db;
+}
+
+/* ── Bookmark and attachment blocks ───────────────────────────────────── */
+QLabel#linkTitle { color: #c77a1f; }
+QLabel#linkUrl { color: #7c8695; font-size: 11px; font-family: 'SF Mono', Menlo, Consolas, 'JetBrains Mono', 'IBM Plex Mono', monospace; }
+QFrame#attachmentCard { background-color: #e8eaed; border: 1px solid #c5cad2;
+                        border-radius: 3px; }
+
+/* ── Database view tabs ─────────────────────────────────────────────── */
+QPushButton#viewTab {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: #4a5568;
+    padding: 5px 12px;
+    font-weight: 500;
+}
+QPushButton#viewTab:hover { background-color: #d1d5db; color: #1a1c1e; }
+QPushButton#viewTab:checked { background-color: #dde0e5; color: #1a1c1e; }
+QPushButton#viewTab:disabled { color: #7c8695; }
+
+/* A group's fold arrow, big enough to aim at. */
+QToolButton#groupFold {
+    background: transparent;
+    border: none;
+    color: #4a5568;
+    font-size: 14px;
+    padding: 0 2px;
+    min-width: 20px;
+    min-height: 24px;
+}
+QToolButton#groupFold:hover { color: #1a1c1e; }
+
+/* ── Database page, Notion-like (by the user's request, 2026-10-25) ───────
+   No box around the table: it sits on the page, its header on the page
+   background, lines faint, text a size up. Scoped to the database page so
+   the suite's file lists keep their own look. */
+QLineEdit#databaseTitle {
+    font-size: 26px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    color: #1a1c1e;
+    padding: 0;
+}
+QLabel#dbStats { color: #7c8695; font-size: 12px; }
+QLineEdit#dbFilter { padding: 3px 8px; }
+QTableView#databaseTable {
+    background-color: #f0f1f3;
+    border: none;
+    border-top: 1px solid #c5cad2;
+    font-size: 14px;
+    gridline-color: #c5cad2;
+}
+QTableView#databaseTable QHeaderView { background-color: #f0f1f3; }
+QTableView#databaseTable QHeaderView::section:horizontal {
+    background-color: #f0f1f3;
+    color: #4a5568;
+    font-size: 13px;
+    font-weight: 400;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid #c5cad2;
+    border-right: 1px solid #c5cad2;
+}
+QTableView#databaseTable QHeaderView::section:vertical,
+QTableView#databaseTable QHeaderView:vertical { background-color: #f0f1f3; }
+QTableView#databaseTable QTableCornerButton::section {
+    background-color: #f0f1f3;
+    border: none;
+    border-bottom: 1px solid #c5cad2;
+}
+QToolButton#dbIcon {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+}
+QToolButton#dbIcon:hover { background-color: #d1d5db; }
