@@ -4,13 +4,17 @@ name: CI
 # the apps do. Two Pythons: 3.14 is what the apps ship, 3.12 is the oldest
 # pyproject.toml accepts. The suite runs twice per Python, offscreen and with
 # no fonts (minimal), because pixel tests must pass both ways; it takes about
-# a second. A push that only touches Markdown has nothing to test.
+# a second. A push that only touches Markdown has nothing to test. GitHub
+# judges that by the pushed commits, and the first push of a branch can look
+# Markdown-only when its newest commit is (the repo's first push did), so CI
+# can also be run by hand: gh workflow run CI.
 on:
   push:
     branches: [main]
     paths-ignore: ["**.md"]
   pull_request:
     paths-ignore: ["**.md"]
+  workflow_dispatch:
 
 permissions:
   contents: read
