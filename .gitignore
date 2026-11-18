@@ -1,0 +1,17 @@
+# Environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Build output
+build/
+dist/
+*.egg-info/
+
+# Gallery screenshots made while checking a change
+screenshots/
+
+# macOS
+.DS_Store

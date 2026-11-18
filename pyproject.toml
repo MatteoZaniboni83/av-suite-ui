@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "av-suite-ui"
+version = "0.1.0"
+description = "Shared UI foundation for the AV Suite apps: Tally theme, stylesheet template, small widgets"
+requires-python = ">=3.12"
+dependencies = ["PySide6>=6.8"]
+
+# PyInstaller finds the hook that collects styles.qss through this entry
+# point, so an app's spec needs no datas line for this package.
+[project.entry-points.pyinstaller40]
+hook-dirs = "av_suite_ui._pyinstaller:get_hook_dirs"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# The stylesheet template is read at runtime through importlib.resources:
+# it has to be inside the wheel, beside the code.
+[tool.setuptools.package-data]
+av_suite_ui = ["*.qss", "py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+timeout = 120
+# A test stuck inside a Qt modal dialog cannot be interrupted by the timeout
+# signal; this dumps every thread's stack to stderr instead, so a CI log
+# shows where it hung.
+faulthandler_timeout = 90
+# Deprecations raised from our own code fail the suite, so they get fixed
+# when they appear instead of becoming breakage on the next Qt upgrade.
+filterwarnings = ["error::DeprecationWarning:av_suite_ui"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP"]
+ignore = [
+    "B008",   # parent=QModelIndex() defaults are the Qt idiom
+]
