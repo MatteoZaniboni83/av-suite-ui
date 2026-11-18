@@ -12,6 +12,10 @@ any widget gets (cascade_conflicts). So switching is no visual change.
 Annotations: its old sheet had none of Media Transfer's tree rules and no
 generic checked button; shared + its sheet adds exactly those (listed below)
 and loses nothing. Its page tree and its checkable tab are painted the same.
+
+A deliberate restyle does not touch the golden files, which stay what the apps
+built. It is listed in RESTYLES, value by value, and applied to the golden
+text before comparing; anything else that changes still fails.
 """
 
 from __future__ import annotations
@@ -25,6 +29,16 @@ import pytest
 
 GOLDEN = Path(__file__).parent / "golden"
 MODES = ("dark", "light")
+
+# Deliberate restyles since capture, newest last: release -> mode -> {old: new}.
+# Each value appears in the golden files as the hex colour and as the
+# "r, g, b" that rgba() takes. Say so in the release notes when adding one.
+RESTYLES = {
+    "0.2.0: the warning is yellow, so it no longer reads as the amber accent": {
+        "dark": {"#f39c12": "#f1c40f", "243, 156, 18": "241, 196, 15"},
+        "light": {"#d97706": "#705700", "217, 119, 6": "112, 87, 0"},
+    },
+}
 
 
 # ── A small QSS reader ──────────────────────────────────────────────────────
@@ -107,8 +121,29 @@ def built(mode: str, app: str, icons: str) -> str:
         icons.replace("\\", "/"), "@ICON_DIR@")
 
 
-def golden(mode: str, app: str) -> str:
+def captured(mode: str, app: str) -> str:
     return (GOLDEN / f"{app}_{mode}.qss").read_text(encoding="utf-8")
+
+
+def golden(mode: str, app: str) -> str:
+    """What the app built, with the listed restyles applied."""
+    text = captured(mode, app)
+    for changes in RESTYLES.values():
+        for old, new in changes[mode].items():
+            text = text.replace(old, new)
+    return text
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("app", ("media_transfer", "annotations"))
+def test_each_restyle_is_still_real(qapp, mode, app, icons):
+    """A listed old value was in what the app built and is gone from what the
+    package builds; a stale or mistyped entry fails here."""
+    now = built(mode, app, icons)
+    for release, changes in RESTYLES.items():
+        for old, new in changes[mode].items():
+            assert old in captured(mode, app), (release, old)
+            assert old not in now and new in now, (release, old, new)
 
 
 def app_rules(app: str, mode: str, icons: str) -> list[tuple[str, str]]:

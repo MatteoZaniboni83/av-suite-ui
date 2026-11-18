@@ -79,6 +79,45 @@ def test_text_on_the_accent_is_whichever_contrasts_more(qapp, accent, ink_colour
     assert theme.palette("dark", accent)["on_accent"] == ink_colour
 
 
+def _luminance(colour: QColor) -> float:
+    def channel(v: float) -> float:
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (channel(c) for c in (colour.redF(), colour.greenF(), colour.blueF()))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(a: QColor, b: QColor) -> float:
+    hi, lo = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _over(colour: QColor, alpha: float, surface: QColor) -> QColor:
+    """*colour* at *alpha* painted over *surface*, as rgba() in the sheet is."""
+    return QColor(*(round(c * alpha + s * (1 - alpha)) for c, s in zip(
+        (colour.red(), colour.green(), colour.blue()),
+        (surface.red(), surface.green(), surface.blue()), strict=True)))
+
+
+@pytest.mark.parametrize("mode", MODES)
+def test_a_warning_does_not_read_as_the_default_accent(qapp, mode):
+    """The default accent is amber; the warning is yellow, 12°+ of hue away."""
+    from av_suite_ui import theme
+    pal = theme.palette(mode)
+    gap = abs(QColor(pal["warn"]).hue() - QColor(pal["accent"]).hue())
+    assert min(gap, 360 - gap) >= 12, (pal["warn"], pal["accent"])
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("surface", ("bg_base", "bg_raised", "bg_elevated", "bg_sunken"))
+def test_warning_note_text_is_readable_on_every_surface(qapp, mode, surface):
+    """QLabel#warnNote: warn text on a 10% warn tint, 4.5:1 or better."""
+    from av_suite_ui import theme
+    pal = theme.palette(mode)
+    warn = QColor(pal["warn"])
+    note = _over(warn, 0.10, QColor(pal[surface]))
+    assert _contrast(warn, note) >= 4.5, (pal["warn"], surface)
+
+
 # ── The built sheet ─────────────────────────────────────────────────────────
 
 @pytest.mark.parametrize("mode", MODES)

@@ -6,7 +6,7 @@
    error) mean state only; the accent marks selection, focus and the one
    primary action per screen.
    Extracted from Media Transfer 0.1.8+ (8b4f22c); tests/test_golden.py holds
-   it to that app's output. */
+   it to that app's output, apart from the restyles listed there. */
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
 QMainWindow, QDialog { background-color: @bg_base@; }

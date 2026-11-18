@@ -20,8 +20,8 @@ tokens::
 
 Extracted from Media Transfer 0.1.8+ (8b4f22c), with Annotations' fallback
 for an unwritable icon folder. With the default accent, the shared sheet plus
-Media Transfer's own rules is what Media Transfer built before the switch
-(tests/test_golden.py).
+Media Transfer's own rules is what Media Transfer built before the switch,
+except for the deliberate restyles listed in tests/test_golden.py (RESTYLES).
 """
 
 from __future__ import annotations
@@ -42,6 +42,9 @@ MODES = ("dark", "light")
 DARK_DEFAULT_ACCENT = "#f0a040"     # Tally amber, as Smart Preview
 LIGHT_DEFAULT_ACCENT = "#c77a1f"
 
+# warn is yellow, not amber (0.2.0): the default accent is amber, and a warning
+# must not read as the accent. Light warn is dark enough for 4.5:1 text on its
+# own note tint over every surface (test_theme checks both).
 _BASE = {
     "dark": {
         "bg_base": "#1a1c1e", "bg_raised": "#22252a", "bg_elevated": "#2b2f36",
@@ -50,7 +53,7 @@ _BASE = {
         "border_strong": "#555f6e",
         "text_primary": "#e8eaed", "text_secondary": "#9aa3b0",
         "text_muted": "#5c6470",
-        "ok": "#2ecc71", "warn": "#f39c12", "error": "#e74c3c",
+        "ok": "#2ecc71", "warn": "#f1c40f", "error": "#e74c3c",
     },
     "light": {
         "bg_base": "#f0f1f3", "bg_raised": "#e8eaed", "bg_elevated": "#dde0e5",
@@ -59,7 +62,7 @@ _BASE = {
         "border_strong": "#7c8695",
         "text_primary": "#1a1c1e", "text_secondary": "#4a5568",
         "text_muted": "#7c8695",
-        "ok": "#16a34a", "warn": "#d97706", "error": "#dc2626",
+        "ok": "#16a34a", "warn": "#705700", "error": "#dc2626",
     },
 }
 
