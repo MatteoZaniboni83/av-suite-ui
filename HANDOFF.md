@@ -100,30 +100,37 @@ filled correctly. The run printed `frozen 11793 True`.
 
 1. **Settled:** amber accent vs warning amber went to option A, in
    v0.2.0, above.
-2. **Before creating the GitHub repo:**
-   - **Private or public.** If private, each app's CI needs a credential to
-     `pip install` from it (a fine-grained PAT or a deploy key as a secret in
-     each app repo). The repo holds no secrets, so public is the simplest.
-   - **Pin form.** A tag (`@v0.1.0`) reads well, but a tag can be moved. A
-     commit SHA cannot. The apps' rule is "no surprise upgrades", so
-     consider pinning by SHA with the tag in a comment.
-   - **CI here.** Media Transfer's `ci.yml` pattern would be lint + tests on
-     Linux only, on push, with no artifacts. Is that wanted?
+2. **Settled 2026-11-18:** the repo is **public**; apps **pin by full
+   commit SHA** with the tag in a comment; **Linux CI** is added
+   (`.github/workflows/ci.yml`: ruff, then the suite offscreen and with no
+   fonts, on Python 3.12 and 3.14). 3.12 has never run locally (only 3.14
+   is installed), so CI's first run is the first test of the
+   `requires-python = ">=3.12"` claim.
+3. **Still open before creating the GitHub repo:**
+   - **Commit email in a public repo.** Every commit here is authored
+     `MatteoZaniboni83 <the user's personal email>`. Both app repos are
+     private, so this repo would be the first to publish that address.
+     Before the first push, the history can be rewritten to the GitHub
+     noreply address, which changes every SHA and moves both tags. That is
+     harmless now, because nothing is pushed or pinned. After the push, it
+     is not.
+   - **The go-ahead** to create the repo and push.
    - **The folder name has a space** (`av-suite ui`). An app developing
      against a local checkout (`pip install -e "../av-suite ui"`) has to
      quote the path. Renaming it to `av-suite-ui` would match the repo
      name. It is the user's folder, so it was not renamed.
-3. **`format_size`** is identical in both apps. It is an engine helper in
+4. **`format_size`** is identical in both apps. It is an engine helper in
    Media Transfer, whose engines must stay Qt-free, so it has not moved. If it
    should be shared, it would go in a Qt-free submodule (say
    `av_suite_ui.text`). That is the user's call.
 
 ## Next up (rough priority)
 
-1. Settle the decisions above, then create the repo and push `main` plus
-   the `v0.1.0` and `v0.2.0` tags.
+1. Settle the decisions above, then create the public repo and push `main`
+   plus the `v0.1.0` and `v0.2.0` tags. Check the first CI run, Python 3.12
+   especially.
 2. **Media Transfer switches** (in its own session and repo), best in two
-   commits: first pin `v0.1.0`, a pure refactor that the golden test says
+   commits: first pin `v0.1.0` (by its commit SHA), a pure refactor that the golden test says
    looks the same; then bump to `v0.2.0` and look at its warning notes
    (and anything it paints with `palette()["warn"]`). For the first:
    - pin the package;

@@ -8,11 +8,15 @@ bump each app's pin.
 
 ## In an app
 
-Pin a tag in `requirements.txt` (the repo is not on GitHub yet; see HANDOFF.md):
+Pin a release by its tag's full commit SHA in `requirements.txt`, with the
+tag in a comment. A tag can be moved and a SHA cannot. The repo is not on
+GitHub yet; see HANDOFF.md.
 
 ```
-av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@v0.2.0
+av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@<full SHA>  # v0.2.0
 ```
+
+`git rev-parse v0.2.0^{commit}` in this repo gives the SHA.
 
 Keep a small `ui/theme.py` in the app that appends its own sheet:
 

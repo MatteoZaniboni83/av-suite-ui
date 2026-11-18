@@ -11,8 +11,8 @@ each app's pin.
 | --- | --- |
 | Distribution | `av-suite-ui` |
 | Package | `av_suite_ui` |
-| Repo (planned) | `MatteoZaniboni83/av-suite-ui`, not created yet |
-| Apps pin it as | `av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@vX.Y.Z` |
+| Repo (planned) | `MatteoZaniboni83/av-suite-ui`, **public**, not created yet |
+| Apps pin it as | `av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@<full SHA>  # vX.Y.Z` |
 
 "AV Suite", `avsuite` and `av-suite` stay free for the hub (Media Transfer's
 CLAUDE.md, "The name"). This repo is `av-suite-ui`.
@@ -38,6 +38,7 @@ tests/
 ├── golden/                # each app's stylesheet as built before the switch, + its own sheet;
 │                          #   capture.py recaptures one (run with that app's venv)
 ├── test_golden.py         # shared + app sheet == what the app built, + RESTYLES (MT exact, Ann. listed)
+.github/workflows/ci.yml   # Linux: ruff + suite, offscreen and no-fonts, Python 3.12 and 3.14
 ├── test_theme.py          # palette, tokens, icons, pixel checks (ported from both apps)
 ├── test_widgets.py, test_gallery.py, test_packaging.py
 └── pixels.py              # distance / ink / crisp helpers for pixel tests
@@ -154,12 +155,24 @@ the gallery (`--screenshot`) and look at them in the macOS style too.
 - Small commits, one step each.
 - **Version: two spots**, `__version__` in `src/av_suite_ui/__init__.py` and
   `version` in `pyproject.toml`. `test_packaging` fails if they differ.
-- A release is a tag `vX.Y.Z` on `main` once the suite and ruff are green.
-  Nothing is built or uploaded, because apps install the tag from git. Then
-  each app bumps its pin in its own repo and session, runs its own suite and
-  looks at its screens. A change that alters the look (a `RESTYLES` entry)
+- A release is a tag `vX.Y.Z` on `main` once the suite and ruff are green
+  (and CI, once there is a remote). Nothing is built or uploaded, because
+  apps install from git. **Apps pin the tag's full commit SHA**
+  (`git rev-parse vX.Y.Z^{commit}`) with the tag in a comment, because a
+  tag can be moved and a SHA cannot: no surprise upgrades. So never move or
+  delete a pushed tag; fix forward with a new version. Then each app bumps
+  its pin in its own repo and session, runs its own suite and looks at its
+  screens. A change that alters the look (a `RESTYLES` entry)
   is said so in the tag's notes, so each app knows to look before
   bumping.
+- **The repo is public** (the user's choice, 2026-11-18), so apps' CI
+  installs it with no credential. Nothing secret goes in it: no data, no
+  paths from the user's machine, no tokens.
+- **CI** (`.github/workflows/ci.yml`) runs on Linux only, as the apps' CI
+  does: ruff, then the suite offscreen and with `QT_QPA_PLATFORM=minimal`,
+  on Python 3.12 (the floor in pyproject.toml) and 3.14 (what the apps
+  ship). Markdown-only pushes skip it. When the floor or the apps' Python
+  changes, change the matrix with it.
 - Dependencies are pinned in `requirements.txt` / `requirements-dev.txt` to
   the apps' versions. `pyproject.toml` has only the minimum
   (`PySide6>=6.8`), because the apps' pins decide the Qt they ship.
