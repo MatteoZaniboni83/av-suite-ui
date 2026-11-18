@@ -1,0 +1,257 @@
+/* AV Suite shared stylesheet template (av_suite_ui). Tokens are names between
+   @ signs; theme.tokens() supplies the values. Each app appends its own small
+   sheet after this one (build_stylesheet(extra=...)), so an app rule of the
+   same weight overrides a rule here.
+   Visual language follows Smart Preview (Tally). Status colours (ok / warn /
+   error) mean state only; the accent marks selection, focus and the one
+   primary action per screen.
+   Extracted from Media Transfer 0.1.8+ (8b4f22c); tests/test_golden.py holds
+   it to that app's output. */
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+QMainWindow, QDialog { background-color: @bg_base@; }
+
+QWidget {
+    background-color: @bg_base@;
+    color: @text_primary@;
+    font-family: @font_ui@;
+    font-size: 13px;
+}
+
+QToolTip {
+    background-color: @bg_elevated@;
+    color: @text_primary@;
+    border: 1px solid @border_default@;
+    padding: 4px 8px;
+}
+
+/* ── Menus ────────────────────────────────────────────────────────────── */
+QMenuBar { background-color: @bg_raised@; color: @text_secondary@;
+           border-bottom: 1px solid @border_subtle@; }
+QMenuBar::item { padding: 6px 12px; background: transparent; }
+QMenuBar::item:selected { background-color: @bg_overlay@; color: @text_primary@; }
+QMenu { background-color: @bg_raised@; border: 1px solid @border_default@; padding: 4px 0; }
+QMenu::item { padding: 7px 24px 7px 16px; }
+QMenu::item:selected { background-color: @accent_tint@; }
+QMenu::item:disabled { color: @text_muted@; }
+QMenu::separator { height: 1px; background: @border_subtle@; margin: 4px 0; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+QPushButton {
+    background-color: @bg_elevated@;
+    color: @text_primary@;
+    border: 1px solid @border_default@;
+    border-radius: 3px;
+    padding: 0 14px;
+    min-height: 30px;
+    font-weight: 500;
+}
+QPushButton:hover { background-color: @bg_overlay@; border-color: @border_strong@; }
+QPushButton:pressed { background-color: @border_default@; }
+QPushButton:disabled { background-color: @bg_raised@; color: @text_muted@;
+                       border-color: @border_subtle@; }
+/* A checkable button that is on (Media Transfer's Route by file type). The
+   segment, chip and nav rules below are ID selectors and keep precedence over this. Locked
+   while on, it looks locked like every other control, and keeps the accent
+   border as the one sign that it is still on. */
+QPushButton:checked { background-color: @accent_tint@; border-color: @accent_dim@; }
+QPushButton:checked:disabled { background-color: @bg_raised@; color: @text_muted@;
+                               border-color: @accent_dim@; }
+
+/* The one primary action on a screen (Compare, Sync, + Page). */
+QPushButton#primary {
+    background-color: @accent@;
+    color: @on_accent@;
+    border: 1px solid @accent@;
+    font-weight: 600;
+}
+QPushButton#primary:hover { background-color: @accent_hover@; border-color: @accent_hover@; }
+QPushButton#primary:pressed { background-color: @accent_pressed@; }
+QPushButton#primary:disabled { background-color: @bg_raised@; color: @text_muted@;
+                               border-color: @border_subtle@; }
+
+/* Destructive confirmation (Mirror with deletes, Delete page). */
+QPushButton#danger {
+    background-color: rgba(@error_rgb@, 0.14);
+    color: @error@;
+    border: 1px solid rgba(@error_rgb@, 0.55);
+    font-weight: 600;
+}
+QPushButton#danger:hover { background-color: rgba(@error_rgb@, 0.24); }
+
+/* Segmented controls: adjacent checkable buttons. */
+QPushButton#segment {
+    background-color: @bg_raised@;
+    color: @text_secondary@;
+    border: 1px solid @border_default@;
+    border-radius: 0;
+    padding: 0 12px;
+    min-height: 28px;
+}
+QPushButton#segment:hover { color: @text_primary@; background-color: @bg_overlay@; }
+QPushButton#segment:checked { background-color: @accent_tint@; color: @text_primary@;
+                              border-color: @accent_dim@; }
+QPushButton#segment[first="true"] { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+QPushButton#segment[last="true"] { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
+/* Filter chips above a table. */
+QPushButton#chip {
+    background-color: transparent;
+    color: @text_secondary@;
+    border: 1px solid @border_subtle@;
+    border-radius: 3px;
+    padding: 0 10px;
+    min-height: 24px;
+    font-size: 12px;
+}
+QPushButton#chip:hover { color: @text_primary@; border-color: @border_default@; }
+QPushButton#chip:checked { background-color: @accent_tint@; color: @text_primary@;
+                           border-color: @accent_dim@; }
+
+QPushButton#iconButton {
+    background: transparent;
+    border: 1px solid transparent;
+    color: @text_secondary@;
+    min-height: 28px;
+    min-width: 28px;
+    padding: 0;
+}
+QPushButton#iconButton:hover { background-color: @bg_overlay@; color: @text_primary@; }
+QPushButton#iconButton:disabled { color: @text_muted@; }
+
+/* ── Inputs ───────────────────────────────────────────────────────────── */
+QLineEdit, QComboBox {
+    background-color: @bg_sunken@;
+    color: @text_primary@;
+    border: 1px solid @border_default@;
+    border-radius: 3px;
+    padding: 0 8px;
+    min-height: 28px;
+    selection-background-color: @accent_tint@;
+}
+QLineEdit:focus, QComboBox:focus { border-color: @accent@; }
+QLineEdit#pathField { font-family: @font_mono@; font-size: 12px; }
+QLineEdit#pathField[dropTarget="true"] { border: 1px dashed @accent@;
+                                         background-color: @accent_tint@; }
+/* Styling the drop-down takes Qt's own arrow away, so the arrow is an image:
+   without one a drop-down looks like a text field. */
+QComboBox::drop-down { border: none; width: 20px; }
+QComboBox::down-arrow { image: url("@arrow_icon@"); width: 10px; height: 10px; }
+QComboBox::down-arrow:disabled { image: url("@arrow_icon_disabled@"); }
+/* A locked drop-down (for the length of a transfer, say) has to look it, as
+   a button does. */
+QComboBox:disabled { color: @text_muted@; border-color: @border_subtle@; }
+QComboBox QAbstractItemView { background-color: @bg_raised@; border: 1px solid @border_default@;
+                              selection-background-color: @accent_tint@; }
+
+QCheckBox { spacing: 6px; background: transparent; }
+QCheckBox::indicator { width: 14px; height: 14px; border: 1px solid @border_strong@;
+                       border-radius: 2px; background: @bg_sunken@; }
+QCheckBox::indicator:checked { image: url("@check_icon@"); border: none; background: transparent; }
+
+/* ── Table ────────────────────────────────────────────────────────────── */
+/* A list (a pick-one dialog) is a table of one column; a tree (Media
+   Transfer's folder overview) is a table with branches. An app whose tree
+   looks otherwise (Annotations' sidebar) restyles it in its own sheet. */
+QTableView, QListWidget, QTreeView {
+    background-color: @bg_sunken@;
+    alternate-background-color: @bg_base@;
+    border: 1px solid @border_subtle@;
+    gridline-color: transparent;
+    selection-background-color: @accent_tint@;
+    selection-color: @text_primary@;
+    outline: 0;
+}
+QTableView::item, QListWidget::item { padding: 0 8px; border: none; }
+QListWidget::item:selected { background-color: @accent_tint@; color: @text_primary@; }
+QTreeView { color: @text_primary@; }
+QTreeView::item { padding: 2px 4px; border: none; }
+QTreeView::item:selected { background-color: @accent_tint@; color: @text_primary@; }
+QTreeView::branch { background: transparent; }
+QTreeView::branch:has-children:closed { image: url("@branch_icon@"); }
+QTreeView::branch:has-children:open { image: url("@arrow_icon@"); }
+QTableView[dropTarget="true"] { border: 1px dashed @accent@; background-color: @accent_tint@; }
+QTableView::indicator { width: 14px; height: 14px; border: 1px solid @border_strong@;
+                        border-radius: 2px; background: @bg_sunken@; }
+QTableView::indicator:checked { image: url("@check_icon@"); border: none; background: transparent; }
+QTableView::indicator:disabled { border-color: @border_subtle@; background: transparent; }
+
+QHeaderView { background-color: @bg_raised@; border: none; }
+QHeaderView::section {
+    background-color: @bg_raised@;
+    color: @text_muted@;
+    border: none;
+    border-bottom: 1px solid @border_subtle@;
+    border-right: 1px solid @border_subtle@;
+    padding: 0 8px;
+    height: 28px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+QTableCornerButton::section { background-color: @bg_raised@; border: none; }
+
+/* ── Progress ─────────────────────────────────────────────────────────── */
+QProgressBar {
+    background-color: @bg_sunken@;
+    border: 1px solid @border_subtle@;
+    border-radius: 2px;
+    max-height: 6px;
+    text-align: center;
+    color: transparent;
+}
+QProgressBar::chunk { background-color: @accent@; border-radius: 1px; }
+QProgressBar[state="done"]::chunk { background-color: @ok@; }
+QProgressBar[state="failed"]::chunk { background-color: @error@; }
+
+/* ── Scrollbars (thin, as Smart Preview) ──────────────────────────────── */
+QScrollBar:vertical { background: transparent; width: 10px; margin: 0; }
+QScrollBar::handle:vertical { background: @border_default@; min-height: 30px;
+                              border-radius: 4px; margin: 2px; }
+QScrollBar::handle:vertical:hover { background: @border_strong@; }
+QScrollBar:horizontal { background: transparent; height: 10px; margin: 0; }
+QScrollBar::handle:horizontal { background: @border_default@; min-width: 30px;
+                                border-radius: 4px; margin: 2px; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }
+
+/* ── Structure ────────────────────────────────────────────────────────── */
+QFrame#navRail { background-color: @bg_raised@; border-right: 1px solid @border_subtle@; }
+QPushButton#navButton {
+    background: transparent;
+    color: @text_secondary@;
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    text-align: left;
+    padding: 0 16px;
+    min-height: 40px;
+}
+QPushButton#navButton:hover { background-color: @bg_overlay@; color: @text_primary@; }
+QPushButton#navButton:checked { color: @text_primary@; background-color: @bg_elevated@;
+                                border-left: 2px solid @accent@; }
+QPushButton#navButton:disabled { color: @text_muted@; }
+
+QFrame#toolbar, QFrame#actionBar { background-color: @bg_raised@; }
+QFrame#toolbar { border-bottom: 1px solid @border_subtle@; }
+QFrame#actionBar { border-top: 1px solid @border_subtle@; }
+QFrame#hairline { background: @border_subtle@; border: none; }
+
+QStatusBar { background-color: @bg_raised@; color: @text_muted@;
+             border-top: 1px solid @border_subtle@; }
+
+/* ── Labels ───────────────────────────────────────────────────────────── */
+QLabel { background: transparent; }
+QLabel#sectionLabel { color: @text_muted@; font-size: 11px; font-weight: 600;
+                      letter-spacing: 1px; text-transform: uppercase; }
+QLabel#appTitle { color: @text_primary@; font-size: 15px; font-weight: 600; }
+QLabel#hint { color: @text_muted@; font-size: 11px; }
+QLabel#data { color: @text_secondary@; font-family: @font_mono@; font-size: 12px; }
+QLabel#dataStrong { color: @text_primary@; font-family: @font_mono@; font-size: 12px;
+                    font-weight: 600; }
+QLabel#warnNote { color: @warn@; background: rgba(@warn_rgb@, 0.10);
+                  border: 1px solid rgba(@warn_rgb@, 0.35); border-radius: 2px;
+                  padding: 6px 8px; font-size: 12px; }
+QLabel#errorNote { color: @error@; background: rgba(@error_rgb@, 0.10);
+                   border: 1px solid rgba(@error_rgb@, 0.35); border-radius: 2px;
+                   padding: 6px 8px; font-size: 12px; }
+QLabel#placeholder { color: @text_muted@; font-size: 13px; }
