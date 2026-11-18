@@ -5,4 +5,4 @@ template) and the small widgets every app builds its screens from. Apps pin a
 tagged version; change the look here, release, bump the pin.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

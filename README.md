@@ -11,7 +11,7 @@ bump each app's pin.
 Pin a tag in `requirements.txt` (the repo is not on GitHub yet; see HANDOFF.md):
 
 ```
-av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@v0.1.0
+av-suite-ui @ git+https://github.com/MatteoZaniboni83/av-suite-ui.git@v0.2.0
 ```
 
 Keep a small `ui/theme.py` in the app that appends its own sheet:

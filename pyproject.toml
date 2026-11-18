@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "av-suite-ui"
-version = "0.1.0"
+version = "0.2.0"
 description = "Shared UI foundation for the AV Suite apps: Tally theme, stylesheet template, small widgets"
 requires-python = ">=3.12"
 dependencies = ["PySide6>=6.8"]

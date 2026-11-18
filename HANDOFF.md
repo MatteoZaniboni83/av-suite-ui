@@ -2,11 +2,13 @@
 
 Read this after CLAUDE.md at the start of every session. Newest state first.
 
-## State as of 2026-11-18: v0.1.0 tagged locally, nothing pushed
+## State as of 2026-11-18: v0.1.0 and v0.2.0 tagged locally, nothing pushed
 
-- **The package exists and v0.1.0 is tagged locally.** There is no GitHub
-  repo and no push: the user creates the repo once the open decisions below
-  are settled. 71 tests pass, ruff is clean, and the suite gives the same
+- **Two tags, both local.** `v0.1.0` is the extraction: what the apps build
+  today, proven by the golden test. `v0.2.0` adds one deliberate restyle:
+  the warning is yellow (below). There is no GitHub repo and no push: the
+  user creates the repo once the open decisions below are settled. 85 tests
+  pass, ruff is clean, and the suite gives the same
   result in the macOS style (`QT_STYLE_OVERRIDE=macOS`) and with no fonts
   (`QT_QPA_PLATFORM=minimal`). Run both before touching anything:
 
@@ -47,7 +49,30 @@ Read this after CLAUDE.md at the start of every session. Newest state first.
   database rules and its `format_size`. Comment wording differed too; the
   shared comments now name both apps.
 
-### Proof that switching changes nothing
+### 0.2.0: the warning is yellow (the user chose option A, 2026-11-18)
+
+- The amber accent and the amber warning were 4° (dark) and 0° (light) of
+  hue apart. The warning is now `#f1c40f` dark and `#705700` light, about
+  15° from the accent.
+- The light shade is darker than the `#8a6d00` first proposed. That figure
+  had been measured against the bare background, but the note's text sits
+  on the note's own 10% tint, where `#8a6d00` gave only 3.3–4.3:1.
+  `#705700` gives 4.5–5.9:1 on all four surfaces. The old `#d97706` gave
+  2.2–2.9:1.
+- Only `QLabel#warnNote` uses the warning in the shared sheet. The `warn`
+  role in `palette()` changes too, so anything an app paints with
+  `palette()["warn"]` changes with it. Today that is Media Transfer only:
+  log ERROR lines (`ui/log_page.py`) and sync-row status text
+  (`ui/sync_model.py`). As plain text the new colours give 5.2:1 or better
+  on every surface and on a selected (accent-tint) row, in both modes.
+  Annotations paints no warning colour itself.
+- The golden files are untouched. `test_golden.RESTYLES` lists the change,
+  and the comparison applies it to the captured text.
+- Screenshots looked at: the gallery's swatches, and warning notes on all
+  four surfaces in both modes beside the primary button and an error note.
+  Taken with `--screenshot` into `screenshots/`, which git ignores.
+
+### Proof that switching to v0.1.0 changes nothing
 
 - `tests/golden/` holds each app's own `build_stylesheet()` output, captured
   by running its code with a throwaway data dir. It also holds each app's
@@ -73,23 +98,8 @@ filled correctly. The run printed `frozen 11793 True`.
 
 ## Waiting on the user
 
-1. **Amber accent vs warning amber**, flagged and not fixed. The dark accent
-   is `#f0a040` (hue 33°) and the dark warning is `#f39c12` (hue 37°). In
-   light mode the accent is `#c77a1f` and the warning `#d97706`, both hue
-   32°, nearly the same colour. A second problem turned up: light-mode
-   `#d97706` is only 2.8:1 on `bg_base`, below the 4.5:1 that text needs, so
-   `QLabel#warnNote` text is hard to read in light mode. The options:
-   - **A. Move the warning to yellow** (recommended). Use `#f1c40f` in dark
-     (hue 48°, 10.3:1) and `#8a6d00` in light (hue 47°, 4.35:1, which also
-     fixes the contrast). The accent stays Tally amber. Warnings in every
-     app change colour: a deliberate restyle, with regenerated golden files
-     and a 0.2.0.
-   - **B. Move the accent off amber** to a hue no status uses. This changes
-     every app's identity, Smart Preview's included.
-   - **C. Keep both colours and rely on non-colour cues.** ⚠ and words are
-     already a suite rule. A warning could also get its own shape (say a
-     left bar on `warnNote`). There is no visual change, but the light-mode
-     contrast problem stays.
+1. **Settled:** amber accent vs warning amber went to option A, in
+   v0.2.0, above.
 2. **Before creating the GitHub repo:**
    - **Private or public.** If private, each app's CI needs a credential to
      `pip install` from it (a fine-grained PAT or a deploy key as a secret in
@@ -111,8 +121,11 @@ filled correctly. The run printed `frozen 11793 True`.
 ## Next up (rough priority)
 
 1. Settle the decisions above, then create the repo and push `main` plus
-   the `v0.1.0` tag.
-2. **Media Transfer switches** (in its own session and repo):
+   the `v0.1.0` and `v0.2.0` tags.
+2. **Media Transfer switches** (in its own session and repo), best in two
+   commits: first pin `v0.1.0`, a pure refactor that the golden test says
+   looks the same; then bump to `v0.2.0` and look at its warning notes
+   (and anything it paints with `palette()["warn"]`). For the first:
    - pin the package;
    - make `ui/theme.py` a thin wrapper that calls
      `build_stylesheet(extra=APP_QSS, icon_dir=<data dir>/icons)` and
@@ -122,8 +135,8 @@ filled correctly. The run printed `frozen 11793 True`.
    - change the spec's `datas` to the app sheet;
    - check that its own test_theme still passes.
 
-   The golden test says the look will not change.
-3. **Annotations switches** the same way, with `annotations_app.qss`. The
+3. **Annotations switches** the same way, with `annotations_app.qss`, and
+   the same two steps. The
    closed-branch image file becomes `branch_*.svg` (the same drawing as
    `arrow_right_*.svg`); its own tests check by selector, not file name.
 4. **Smart Preview, the later phase.** It has `utils/theme.py` (167 lines)

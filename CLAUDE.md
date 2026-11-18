@@ -37,7 +37,7 @@ src/av_suite_ui/
 tests/
 ├── golden/                # each app's stylesheet as built before the switch, + its own sheet;
 │                          #   capture.py recaptures one (run with that app's venv)
-├── test_golden.py         # shared + app sheet == what the app built (MT exact, Ann. listed)
+├── test_golden.py         # shared + app sheet == what the app built, + RESTYLES (MT exact, Ann. listed)
 ├── test_theme.py          # palette, tokens, icons, pixel checks (ported from both apps)
 ├── test_widgets.py, test_gallery.py, test_packaging.py
 └── pixels.py              # distance / ink / crisp helpers for pixel tests
@@ -72,9 +72,13 @@ package adds:
   Transfer, shared + `media_transfer_app.qss` must be the same rules in the
   same order once the app's rules are moved to the end, and the move must
   change nothing in the cascade (`cascade_conflicts`). Any change to
-  `styles.qss` or the palette fails it **on purpose**. When a change is a
-  deliberate restyle, regenerate the golden files and say so in the commit
-  and the release notes. Never edit them by hand to make a test pass.
+  `styles.qss` or the palette fails it **on purpose**. The golden files stay
+  what the apps built: recapture one (`capture.py`) only when the app's own
+  output is the new reference. A deliberate restyle here is listed instead
+  in `RESTYLES` in `test_golden.py`, value by value (hex and `r, g, b`),
+  under the release that makes it, and said so in the commit and the tag's
+  notes. `test_each_restyle_is_still_real` rejects a stale entry. Never edit
+  the golden files by hand to make a test pass.
 - **Rule of two.** A widget, helper or QSS rule lives here only when at
   least two apps use it. Media Transfer's `open_in_smart_preview`,
   `PickOneDialog`, its generic `QPlainTextEdit`, `QLineEdit#number` and the
@@ -118,9 +122,12 @@ package adds:
 - The default accent is Tally amber, `#f0a040` dark and `#c77a1f` light, with
   Smart Preview's hand-tuned shade families. The default round-trips exactly
   and is never computed. Another accent shifts each shade by the hue change.
-- **Known issue, not yet decided:** the amber accent is nearly the warning
-  colour (`#f39c12` dark, `#d97706` light). Until it is resolved, every warning
-  carries ⚠ and words. The options are in HANDOFF.md.
+- **The warning is yellow, not amber** (0.2.0, the user's choice):
+  `#f1c40f` dark, `#705700` light. The apps' old `#f39c12` / `#d97706` read
+  as the amber accent. `test_theme` holds the warning 12°+ of hue from the
+  default accent and its note text at 4.5:1 or better on every surface (on
+  the note's own 10% tint, not the bare surface). A new status colour gets
+  the same two checks. Warnings still carry ⚠ and words.
 - Qt stylesheets ignore `text-transform`: uppercase in code
   (`section_label`).
 
@@ -150,9 +157,9 @@ the gallery (`--screenshot`) and look at them in the macOS style too.
 - A release is a tag `vX.Y.Z` on `main` once the suite and ruff are green.
   Nothing is built or uploaded, because apps install the tag from git. Then
   each app bumps its pin in its own repo and session, runs its own suite and
-  looks at its screens. A change that alters the look (golden files
-  regenerated) is said so in the tag's notes, so each app knows to look
-  before bumping.
+  looks at its screens. A change that alters the look (a `RESTYLES` entry)
+  is said so in the tag's notes, so each app knows to look before
+  bumping.
 - Dependencies are pinned in `requirements.txt` / `requirements-dev.txt` to
   the apps' versions. `pyproject.toml` has only the minimum
   (`PySide6>=6.8`), because the apps' pins decide the Qt they ship.
